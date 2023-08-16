@@ -1,0 +1,33 @@
+<div class="content-block dx-card responsive-paddings">
+  <h2 class="content-block">Cidades e Estados</h2>
+  <div class="dx-field">
+    <div class="dx-field-label">Estado</div>
+    <div class="dx-field-value">
+      <dx-select-box
+        #selectBoxEstado
+        [dataSource]="estado"
+        displayExpr="sigla"
+        valueExpr="sigla"
+        [inputAttr]="{ 'aria-label': 'Estado' }"
+        (onValueChanged)="ListaCidade($event.value)">
+      </dx-select-box>
+    </div>
+  </div>
+
+  <div class="dx-field">
+    <div class="dx-field-label">Cidade</div>
+    <div class="dx-field-value">
+      <dx-select-box
+        #selectBoxCidade
+        [dataSource]="cidade"
+        displayExpr="nome"
+        valueExpr="nome"
+        [inputAttr]="{ 'aria-label': 'Cidade' }">
+      </dx-select-box>
+    </div>
+  </div>
+
+  <div class="current-value">
+    Selecionada a cidade  {{ selectBoxCidade.value }} de  {{ selectBoxEstado.value }}
+  </div>
+</div>
