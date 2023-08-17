@@ -1,11 +1,11 @@
 import { NgModule, Component } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { DxSelectBoxModule, DxTemplateModule, DxTextBoxModule } from 'devextreme-angular';
-import { EstadoCidadeService } from 'src/app/shared/services/estado-cidade.service';
-
-import notify from 'devextreme/ui/notify';
-import { Estado } from 'src/app/shared/interfaces/estado';
+import { CidadeEstadoModule } from 'src/app/shared/components/cidade-estado/cidade-estado.component';
 import { Cidade } from 'src/app/shared/interfaces/cidade';
+import { Estado } from 'src/app/shared/interfaces/estado';
+
+
 
 @Component({
   selector: 'app-selectbox',
@@ -14,45 +14,24 @@ import { Cidade } from 'src/app/shared/interfaces/cidade';
 })
 export class SelectboxComponent {
 
-  estado: Estado[] = [];
-  cidade: Cidade[] = [];
-  estadoSelecionado: any;
+  cidade?: Cidade;
+  estado?: Estado;
 
-
-  constructor(private service: EstadoCidadeService) {
-    this.listaEstados();
+  cidadesSelecionadas(value: Cidade) {
+    this.cidade = value;
   }
 
-  listaEstados() {
-    this.service.listarEstado().subscribe((estados: Estado[]) => {
-      this.estado = estados;
-    });
+  estadosSelecionados(value: Estado) {
+    this.estado = value;
   }
 
-
-  ListaCidade(siglaEstado: string): void {
-    this.estadoSelecionado = siglaEstado;
-
-    if (this.estadoSelecionado) {
-      this.service.listarCidade(this.estadoSelecionado).subscribe((cidades) => {
-        this.cidade = cidades;
-      });
-    } else {
-      this.cidade = [];
-    }
-  }
-
-
-  onValueChangedCidade(e: any) {
-    notify(`The value is changed to: "${e.value}"`);
-  }
 }
 
-
-
 @NgModule({
-  imports: [  BrowserModule, DxSelectBoxModule, DxTextBoxModule, DxTemplateModule ],
+  imports: [  BrowserModule, DxSelectBoxModule, DxTextBoxModule, DxTemplateModule, CidadeEstadoModule ],
   exports: [ SelectboxComponent ],
   declarations: [ SelectboxComponent ]
 })
 export class SelectboxModule {}
+
+

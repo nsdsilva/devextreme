@@ -7,8 +7,9 @@ import { FooterModule, ResetPasswordFormModule, CreateAccountFormModule, ChangeP
 import { AuthService, ScreenService, AppInfoService } from './shared/services';
 import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
-import { SelectboxModule } from './pages/selectbox/selectbox.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SelectboxModule } from './pages/selectbox/selectbox.component';
+
 
 
 @NgModule({
@@ -28,8 +29,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoginFormModule,
     UnauthenticatedContentModule,
     AppRoutingModule,
-    SelectboxModule,
-    HttpClientModule
+    HttpClientModule,
+    SelectboxModule
   ],
   providers: [
     AuthService,
