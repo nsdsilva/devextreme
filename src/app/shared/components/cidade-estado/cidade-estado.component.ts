@@ -20,7 +20,6 @@ export class CidadeEstadoComponent {
   estado: Estado[] = [];
   cidade: Cidade[] = [];
   estadoSelecionado: any;
-  teste: any;
 
 
   constructor(private service: EstadoCidadeService) {
@@ -37,7 +36,7 @@ export class CidadeEstadoComponent {
 
   ListaCidade(siglaEstado: string): void {
     this.estadoSelecionado = siglaEstado;
-    this.teste = this.eventoEstado.emit(this.estadoSelecionado);
+    this.eventoEstado.emit(this.estadoSelecionado);
 
     if (this.estadoSelecionado) {
       this.service.listarCidade(this.estadoSelecionado).subscribe((cidades) => {
