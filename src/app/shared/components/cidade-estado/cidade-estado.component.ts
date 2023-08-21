@@ -1,8 +1,7 @@
-import { NgModule, Component, Output, EventEmitter, Input } from '@angular/core';
+import { NgModule, Component, Output, EventEmitter } from '@angular/core';
 import { Estado } from '../../interfaces/estado';
 import { Cidade } from '../../interfaces/cidade';
 import { EstadoCidadeService } from '../../services/estado-cidade.service';
-import notify from 'devextreme/ui/notify';
 import { BrowserModule } from '@angular/platform-browser';
 import { DxSelectBoxModule, DxTemplateModule, DxTextBoxModule } from 'devextreme-angular';
 
@@ -14,12 +13,13 @@ import { DxSelectBoxModule, DxTemplateModule, DxTextBoxModule } from 'devextreme
 export class CidadeEstadoComponent {
 
   @Output() eventoCidade = new EventEmitter<Cidade>();
-  @Output() eventoEstado = new EventEmitter<Estado>;
+  @Output() eventoEstado = new EventEmitter<Estado>();
 
 
-  estado: Estado[] = [];
+  estado: any[] = [];
   cidade: Cidade[] = [];
   estadoSelecionado: any;
+  estadoPadrao: string = 'MG';
 
 
   constructor(private service: EstadoCidadeService) {
@@ -27,14 +27,18 @@ export class CidadeEstadoComponent {
   }
 
 
+
   listaEstados() {
     this.service.listarEstado().subscribe((estados: Estado[]) => {
-      this.estado = estados;
+      this.estado = estados.map(nome => ({
+        display: `${nome.nome} - ${nome.sigla}`
+      }));
+      this.listarCidadesDoEstadoPadrao();
     });
   }
 
 
-  ListaCidade(siglaEstado: string): void {
+  ListaCidade(siglaEstado: string): void { //listando as cidades quando é alterado o estado selecionado do seu valor padrão
     this.estadoSelecionado = siglaEstado;
     this.eventoEstado.emit(this.estadoSelecionado);
 
@@ -48,9 +52,20 @@ export class CidadeEstadoComponent {
   }
 
 
+  listarCidadesDoEstadoPadrao() { //listando as cidades quando eu tenho um valor padrão no meu selectbox
+    this.estadoSelecionado = this.estadoPadrao;
+    this.eventoEstado.emit(this.estadoSelecionado);
+
+    this.service.listarCidade(this.estadoPadrao).subscribe((data: any[]) => {
+      this.cidade = data;
+    });
+  }
+
+
   selecionarCidade(value: Cidade) {
     this.eventoCidade.emit(value);
   }
+
 }
 
 

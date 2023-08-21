@@ -1,13 +1,13 @@
-<div class="content-block dx-card responsive-paddings">
-  <h2 class="content-block">Cidades e Estados</h2>
+
   <div class="dx-field">
     <div class="dx-field-label">Estado</div>
     <div class="dx-field-value">
       <dx-select-box
         #selectBoxEstado
         [dataSource]="estado"
-        displayExpr="sigla"
-        valueExpr="sigla"
+        [displayExpr]="'display'"
+        valueExpr="'sigla'"
+        [value]="estadoPadrao"
         [inputAttr]="{ 'aria-label': 'Estado' }"
         (onValueChanged)="ListaCidade($event.value)">
       </dx-select-box>
@@ -27,5 +27,5 @@
       </dx-select-box>
     </div>
   </div>
-</div>
+
 

@@ -21,5 +21,15 @@ export const navigation = [
         path: '/selectbox'
       }
     ]
+  },
+  {
+    text: 'Cliente',
+    icon: 'user',
+    items: [
+      {
+        text: 'Cadastro',
+        path: '/clientes'
+      }
+    ]
   }
 ];

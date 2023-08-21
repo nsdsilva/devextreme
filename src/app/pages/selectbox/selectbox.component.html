@@ -1,7 +1,6 @@
-<app-cidade-estado (eventoCidade)="cidadesSelecionadas($event)"
-                   (eventoEstado)="estadosSelecionados($event)">
-</app-cidade-estado>
-
 <div class="content-block dx-card responsive-paddings">
-  Selecionada a cidade {{ cidade }} do estado de {{ estado }}
+  <h2>Cidades e Estados</h2>
+  <p>Selecionada a cidade {{ cidade }} do estado de {{ estado }} </p>
+  <app-cidade-estado (eventoCidade)="cidadesSelecionadas($event)" (eventoEstado)="estadosSelecionados($event)"></app-cidade-estado>
 </div>
+
