@@ -16,10 +16,10 @@ export class CidadeEstadoComponent {
   @Output() eventoEstado = new EventEmitter<Estado>();
 
 
-  estado: Estado[] = [];
+  estado: any[] = [];
   cidade: Cidade[] = [];
   estadoSelecionado: any;
-  estadoPadrao: string = '';
+  estadoPadrao: string = 'MG';
 
 
   constructor(private service: EstadoCidadeService) {
@@ -30,8 +30,10 @@ export class CidadeEstadoComponent {
 
   listaEstados() {
     this.service.listarEstado().subscribe((estados: Estado[]) => {
-      this.estado = estados;
-
+      this.estado = estados.map(nome => ({
+        display: `${nome.nome} - ${nome.sigla}`
+      }));
+      this.listarCidadesDoEstadoPadrao();
     });
   }
 

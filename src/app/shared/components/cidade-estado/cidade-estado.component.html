@@ -5,8 +5,9 @@
       <dx-select-box
         #selectBoxEstado
         [dataSource]="estado"
-        displayExpr="nome"
-        valueExpr="sigla"
+        [displayExpr]="'display'"
+        valueExpr="'sigla'"
+        [value]="estadoPadrao"
         [inputAttr]="{ 'aria-label': 'Estado' }"
         (onValueChanged)="ListaCidade($event.value)">
       </dx-select-box>
