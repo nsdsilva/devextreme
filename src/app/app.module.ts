@@ -9,6 +9,7 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SelectboxModule } from './pages/selectbox/selectbox.component';
+import { FormClienteComponent } from './shared/components/cliente/form-cliente/form-cliente.component';
 
 
 
@@ -30,7 +31,8 @@ import { SelectboxModule } from './pages/selectbox/selectbox.component';
     UnauthenticatedContentModule,
     AppRoutingModule,
     HttpClientModule,
-    SelectboxModule
+    SelectboxModule,
+    HttpClientModule
   ],
   providers: [
     AuthService,

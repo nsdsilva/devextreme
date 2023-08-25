@@ -7,6 +7,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
 import { SelectboxComponent } from './pages/selectbox/selectbox.component';
+import { ClienteComponent } from './pages/cliente/cliente.component';
+import { FormClienteComponent } from './shared/components/cliente/form-cliente/form-cliente.component';
 
 
 const routes: Routes = [
@@ -48,6 +50,16 @@ const routes: Routes = [
   {
     path: 'selectbox',
     component: SelectboxComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'clientes',
+    component: ClienteComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'novo-cliente',
+    component: FormClienteComponent,
     canActivate: [ AuthGuardService ]
   },
   {
