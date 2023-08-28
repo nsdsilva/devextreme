@@ -21,12 +21,23 @@ export class ClienteService {
   }
 
 
-
-  salvarClientes(cliente: Cliente): Observable<Cliente> {
-    return this.http.post<Cliente>(this.API , cliente);
+  getById(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.API}/${id}`);
   }
 
-  alteraClientes(cliente: Cliente) {
-    return this.http.put<Cliente>(`${this.API}/${cliente.id}`, cliente);
+
+  salvarClientes(cliente: Cliente): Observable<Cliente> {
+    if (cliente.id) {
+      console.log('Entrei no put')
+      return this.http.put<Cliente>(`${this.API}/${cliente.id}`, cliente);
+    } else {
+      console.log('Entrei no post')
+      return this.http.post<Cliente>(this.API, cliente);
+    }
+  }
+
+
+  deletarCliente(cliente: number): Observable<Cliente> {
+    return this.http.delete<Cliente>(`${this.API}/${cliente}`);
   }
 }

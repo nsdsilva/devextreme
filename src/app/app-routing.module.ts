@@ -9,6 +9,8 @@ import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
 import { SelectboxComponent } from './pages/selectbox/selectbox.component';
 import { ClienteComponent } from './pages/cliente/cliente.component';
 import { FormClienteComponent } from './shared/components/cliente/form-cliente/form-cliente.component';
+import { ProdutoComponent } from './pages/produto/produto.component';
+import { FormProdutoComponent } from './shared/components/produto/form-produto/form-produto.component';
 
 
 const routes: Routes = [
@@ -60,6 +62,36 @@ const routes: Routes = [
   {
     path: 'novo-cliente',
     component: FormClienteComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'editar-cliente/:id',
+    component: FormClienteComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'excluir-cliente/:id',
+    component: FormClienteComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'produtos',
+    component: ProdutoComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'novo-produto',
+    component: FormProdutoComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'editar-produto/:id',
+    component: FormProdutoComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'excluir-produto/:id',
+    component: FormProdutoComponent,
     canActivate: [ AuthGuardService ]
   },
   {

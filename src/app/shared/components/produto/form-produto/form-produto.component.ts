@@ -1,32 +1,28 @@
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit, ViewChild } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { DxBulletModule, DxButtonModule, DxDataGridModule, DxLoadPanelModule, DxTemplateModule } from 'devextreme-angular';
-
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { DxBulletModule, DxButtonModule, DxFormComponent, DxFormModule, DxNumberBoxModule, DxTemplateModule, DxTextBoxModule } from 'devextreme-angular';
 
 import notify from 'devextreme/ui/notify';
-import { Cliente } from 'src/app/shared/interfaces/cliente';
-import { ClienteService } from 'src/app/shared/services/cliente.service';
-
-
-
+import { Produto } from 'src/app/shared/interfaces/produto';
+import { ProdutoService } from 'src/app/shared/services/produto.service';
 
 @Component({
-  selector: 'app-list-cliente',
-  templateUrl: './list-cliente.component.html',
-  styleUrls: ['./list-cliente.component.scss']
+  selector: 'app-form-produto',
+  templateUrl: './form-produto.component.html',
+  styleUrls: ['./form-produto.component.scss']
 })
-export class ListClienteComponent implements OnInit {
+export class FormProdutoComponent implements OnInit {
 
-  dataSource: Cliente[] = [];
-  linhaSelecionada: any;
+  @ViewChild(DxFormComponent, { static: false }) form! : DxFormComponent;
+
+  produto!: Produto;
   isPredefined = true;
   predefinedPosition = 'bottom center';
   direction = 'up-push';
   sucesso: string[] = ['success'];
-  erro: string[] = ['danger'];
-  loadingVisible = false;
-  clienteInfo: any = {};
+  erro: string[] = ['danger']
 
   coordinatePosition: object = {
     top: undefined,
@@ -35,51 +31,50 @@ export class ListClienteComponent implements OnInit {
     right: undefined,
   };
 
-  constructor(private service: ClienteService,
-              private router: Router) {}
+
+  constructor(private service: ProdutoService,
+              private location: Location,
+              private activatedRoute: ActivatedRoute) {}
 
 
 
   ngOnInit(): void {
-    this.listaCliente();
+    this.produto = {id: 0, descricao: '', codigo: '', valor_unitario: 0};
+
+    this.service.getById(this.activatedRoute.snapshot.params['id']).subscribe(
+      produto => {
+        this.produto = produto;
+      });
   }
 
 
 
-  listaCliente() {
-    this.clienteInfo = {};
-    this.loadingVisible = true;
-
-    this.service.listaClientes().subscribe((resposta: Cliente[]) => {
-      console.log(resposta);
-      this.dataSource = resposta;
-    })
+  ngAfterViewInit() {
+    this.form.instance.validate();
   }
 
 
-  novoCliente() {
-    this.router.navigate(['/novo-cliente']);
+  voltar() {
+    this.location.back();
   }
 
 
-  onRowClick(event: any): void {
-    this.linhaSelecionada = event.data.id;
-    this.router.navigate(['/editar-cliente', this.linhaSelecionada]);
+  cancelar() {
+    this.form.instance.resetValues();
   }
 
 
-  validateRemove(e: any) {
-    this.linhaSelecionada = e.data.id;
-
-    this.service.deletarCliente(this.linhaSelecionada).subscribe(resposta => {
+  salvar() {
+    this.service.salvarProdutos(this.produto).subscribe(resposta => {
       if(resposta) {
         this.showSucesso();
-        this.listaCliente();
+        this.voltar();
       } else {
         this.showError();
       }
-    })
+    });
   }
+
 
 
   showSucesso() {
@@ -91,7 +86,7 @@ export class ListClienteComponent implements OnInit {
         const type = this.sucesso[randomIndex];
 
         notify({
-            message: 'Cliente excluído com sucesso!',
+            message: 'Produto salvo com sucesso!',
             height: 45,
             width: 500,
             minWidth: 150,
@@ -119,7 +114,7 @@ export class ListClienteComponent implements OnInit {
         const type = this.sucesso[randomIndex];
 
         notify({
-            message: 'Ocorreu um erro ao excluir cliente',
+            message: 'Ocorreu um erro ao salvar produto',
             height: 45,
             width: 500,
             minWidth: 150,
@@ -136,17 +131,6 @@ export class ListClienteComponent implements OnInit {
     }
   }
 
-
-  onShown() {
-    setTimeout(() => {
-      this.loadingVisible = false;
-    }, 3000);
-  }
-
-
-  onHidden() {
-    this.clienteInfo = this.dataSource;
-  }
 }
 
 
@@ -154,8 +138,8 @@ export class ListClienteComponent implements OnInit {
 
 
 @NgModule({
-  imports: [  BrowserModule, DxDataGridModule, DxTemplateModule, DxBulletModule, DxButtonModule, DxLoadPanelModule ],
-  exports: [ ListClienteComponent ],
-  declarations: [ ListClienteComponent ]
+  imports: [  BrowserModule, DxTemplateModule, DxBulletModule, DxButtonModule, DxFormModule,  DxTextBoxModule, DxNumberBoxModule ],
+  exports: [ FormProdutoComponent ],
+  declarations: [ FormProdutoComponent ]
 })
-export class ListClienteModule {}
+export class FormProdutoModule {}

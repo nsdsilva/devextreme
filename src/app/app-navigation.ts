@@ -31,5 +31,15 @@ export const navigation = [
         path: '/clientes'
       }
     ]
+  },
+  {
+    text: 'Produtos',
+    icon: 'cart',
+    items: [
+      {
+        text: 'Cadastro',
+        path: '/produtos'
+      }
+    ]
   }
 ];

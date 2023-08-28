@@ -1,24 +1,20 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { DxBulletModule, DxButtonModule, DxDataGridModule, DxLoadPanelModule, DxTemplateModule } from 'devextreme-angular';
-
+import { DxBulletModule, DxButtonModule, DxDataGridModule, DxTemplateModule } from 'devextreme-angular';
 
 import notify from 'devextreme/ui/notify';
-import { Cliente } from 'src/app/shared/interfaces/cliente';
-import { ClienteService } from 'src/app/shared/services/cliente.service';
-
-
-
+import { Produto } from 'src/app/shared/interfaces/produto';
+import { ProdutoService } from 'src/app/shared/services/produto.service';
 
 @Component({
-  selector: 'app-list-cliente',
-  templateUrl: './list-cliente.component.html',
-  styleUrls: ['./list-cliente.component.scss']
+  selector: 'app-list-produto',
+  templateUrl: './list-produto.component.html',
+  styleUrls: ['./list-produto.component.scss']
 })
-export class ListClienteComponent implements OnInit {
+export class ListProdutoComponent implements OnInit {
 
-  dataSource: Cliente[] = [];
+  dataSource: Produto[] = [];
   linhaSelecionada: any;
   isPredefined = true;
   predefinedPosition = 'bottom center';
@@ -35,50 +31,44 @@ export class ListClienteComponent implements OnInit {
     right: undefined,
   };
 
-  constructor(private service: ClienteService,
+
+  constructor(private service: ProdutoService,
               private router: Router) {}
 
-
-
   ngOnInit(): void {
-    this.listaCliente();
+    this.listarProdutos();
   }
 
 
-
-  listaCliente() {
-    this.clienteInfo = {};
-    this.loadingVisible = true;
-
-    this.service.listaClientes().subscribe((resposta: Cliente[]) => {
-      console.log(resposta);
+  listarProdutos() {
+    this.service.listarProdutos().subscribe(resposta => {
       this.dataSource = resposta;
     })
   }
 
 
-  novoCliente() {
-    this.router.navigate(['/novo-cliente']);
-  }
-
-
-  onRowClick(event: any): void {
-    this.linhaSelecionada = event.data.id;
-    this.router.navigate(['/editar-cliente', this.linhaSelecionada]);
+  onRowClick(e: any) {
+    this.linhaSelecionada = e.data.id;
+    this.router.navigate(['/editar-produto', this.linhaSelecionada]);
   }
 
 
   validateRemove(e: any) {
     this.linhaSelecionada = e.data.id;
 
-    this.service.deletarCliente(this.linhaSelecionada).subscribe(resposta => {
+    this.service.deletarProdutos(this.linhaSelecionada).subscribe(resposta => {
       if(resposta) {
         this.showSucesso();
-        this.listaCliente();
+        this.listarProdutos();
       } else {
         this.showError();
       }
     })
+  }
+
+
+  novoProduto() {
+    this.router.navigate(['/novo-produto']);
   }
 
 
@@ -137,25 +127,13 @@ export class ListClienteComponent implements OnInit {
   }
 
 
-  onShown() {
-    setTimeout(() => {
-      this.loadingVisible = false;
-    }, 3000);
-  }
-
-
-  onHidden() {
-    this.clienteInfo = this.dataSource;
-  }
 }
 
 
 
-
-
 @NgModule({
-  imports: [  BrowserModule, DxDataGridModule, DxTemplateModule, DxBulletModule, DxButtonModule, DxLoadPanelModule ],
-  exports: [ ListClienteComponent ],
-  declarations: [ ListClienteComponent ]
+  imports: [  BrowserModule, DxDataGridModule, DxTemplateModule, DxBulletModule, DxButtonModule ],
+  exports: [ ListProdutoComponent ],
+  declarations: [ ListProdutoComponent ]
 })
-export class ListClienteModule {}
+export class ListProdutoModule {}
