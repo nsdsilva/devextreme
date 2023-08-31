@@ -28,10 +28,8 @@ export class ClienteService {
 
   salvarClientes(cliente: Cliente): Observable<Cliente> {
     if (cliente.id) {
-      console.log('Entrei no put')
       return this.http.put<Cliente>(`${this.API}/${cliente.id}`, cliente);
     } else {
-      console.log('Entrei no post')
       return this.http.post<Cliente>(this.API, cliente);
     }
   }
@@ -39,5 +37,9 @@ export class ClienteService {
 
   deletarCliente(cliente: number): Observable<Cliente> {
     return this.http.delete<Cliente>(`${this.API}/${cliente}`);
+  }
+
+  getByNome(cliente: string): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(`${this.API}/buscar-por-nome?nome=${cliente}`)
   }
 }

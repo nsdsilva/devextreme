@@ -11,6 +11,8 @@ import { ClienteComponent } from './pages/cliente/cliente.component';
 import { FormClienteComponent } from './shared/components/cliente/form-cliente/form-cliente.component';
 import { ProdutoComponent } from './pages/produto/produto.component';
 import { FormProdutoComponent } from './shared/components/produto/form-produto/form-produto.component';
+import { NotaComponent } from './pages/nota/nota.component';
+import { FormNotaComponent } from './shared/components/nota/form-nota/form-nota.component';
 
 
 const routes: Routes = [
@@ -92,6 +94,26 @@ const routes: Routes = [
   {
     path: 'excluir-produto/:id',
     component: FormProdutoComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'notas',
+    component: NotaComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'nova-nota',
+    component: FormNotaComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'editar-nota/:id',
+    component: FormNotaComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'excluir-nota/:id',
+    component: FormNotaComponent,
     canActivate: [ AuthGuardService ]
   },
   {

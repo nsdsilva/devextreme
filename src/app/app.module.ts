@@ -9,18 +9,13 @@ import { UnauthenticatedContentModule } from './unauthenticated-content';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SelectboxModule } from './pages/selectbox/selectbox.component';
-import { ListNotaComponent } from './shared/components/nota/list-nota/list-nota.component';
-import { FormNotaComponent } from './shared/components/nota/form-nota/form-nota.component';
-import { NotaComponent } from './pages/nota/nota.component';
+import { ItensComponent } from './shared/components/itens/itens.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ListNotaComponent,
-    FormNotaComponent,
-    NotaComponent,
 
   ],
   imports: [

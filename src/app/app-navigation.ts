@@ -41,5 +41,15 @@ export const navigation = [
         path: '/produtos'
       }
     ]
+  },
+  {
+    text: 'Nota Fiscal',
+    icon: 'description',
+    items: [
+      {
+        text: 'Cadastro',
+        path: '/notas'
+      }
+    ]
   }
 ];

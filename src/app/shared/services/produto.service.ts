@@ -11,7 +11,6 @@ export class ProdutoService {
   private readonly API = 'produto';
 
 
-
   constructor(private http: HttpClient) { }
 
 
