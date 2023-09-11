@@ -1,6 +1,17 @@
 <div class="content-block dx-card responsive-paddings">
   <dx-form id="form" [formData]="notas" [colCount]="1">
 
+    <dxi-item class="buttons">
+      <dx-button icon="undo" text="Voltar" [width]="136" (onClick)="voltar()">
+      </dx-button>
+
+      <dx-button icon="close" type="danger" text="Cancelar" [width]="136" (onClick)="cancelar()">
+      </dx-button>
+
+      <dx-button icon="check" type="success" text="Salvar" [width]="136" (onClick)="salvar()">
+      </dx-button>
+    </dxi-item>
+
     <dxi-item itemType="group" caption="Cadastro de Nota Fiscal">
 
       <div class="containerTextBox">
@@ -9,13 +20,13 @@
             <dxi-item dataField="nome do Cliente">
               <dx-autocomplete
                 placeholder="Digite o nome para buscar o cliente..."
-                (value)="clienteSalvo"
+                [(value)]="clienteSalvo"
                 [dataSource]="listaClientes"
                 [searchExpr]="'nome'"
                 [valueExpr]="'nome'"
                 displayExpr="'nome'"
                 (onValueChanged)="updateClientesInfo($event)"
-                [width]="900">
+                [width]="1000">
               </dx-autocomplete>
             </dxi-item>
 
@@ -35,7 +46,8 @@
             <dx-date-box
               [inputAttr]="{ 'aria-label': 'Data da Nota' }"
               [width]="300"
-              [value]="notas.data">
+              [value]="notas.data"
+              displayFormat="dd/MM/yyyy">
             </dx-date-box>
           </dxi-item>
         </div>
@@ -49,7 +61,8 @@
           [remoteOperations]="false"
           [allowColumnReordering]="true"
           [rowAlternationEnabled]="true"
-          [showBorders]="true">
+          [showBorders]="true"
+          (onRowInserted)="onRowInserted($event)">
 
 
           <dxo-header-filter [visible]="true"></dxo-header-filter>
@@ -64,16 +77,28 @@
           </dxo-editing>
 
           <dxi-column
-            dataField="produto.descricao"
+            caption="Ordem"
+            dataField="items.ordenacao"
+            dataType="number"
+            alignment="left"
+            [allowGrouping]="false"
+            [allowEditing]="false"
+            cssClass="bullet">
+          </dxi-column>
+
+
+          <dxi-column
+            dataField="produto.id"
             caption="Produto"
-            dataType="string"
+            dataType="number"
             alignment="left"
             [allowGrouping]="false"
             cssClass="bullet">
 
             <dxo-lookup
               [dataSource]="dataSourceProdutos"
-              valueExpr="descricao"
+
+              valueExpr="id"
               displayExpr="descricao">
             </dxo-lookup>
           </dxi-column>
@@ -86,6 +111,19 @@
             [allowGrouping]="false"
             cssClass="bullet">
           </dxi-column>
+
+          <dxi-column
+            caption="Valor Unitário"
+            dataField="produto.valor_unitario"
+            dataType="number"
+            format="$ #.##0,#"
+            alignment="left"
+            [allowGrouping]="false"
+            [allowEditing]="true"
+            [calculateCellValue]="calcularValorUnitario"
+            cssClass="bullet">
+         </dxi-column>
+
 
           <dxi-column
             caption="Valor Total"
@@ -114,16 +152,6 @@
           </dx-data-grid>
       </dxi-item>
 
-      <dxi-item class="buttons">
-        <dx-button icon="undo" text="Voltar" [width]="136" (onClick)="voltar()">
-        </dx-button>
-
-        <dx-button icon="close" type="danger" text="Cancelar" [width]="136" (onClick)="cancelar()">
-        </dx-button>
-
-        <dx-button icon="check" type="success" text="Salvar" [width]="136" (onClick)="salvar()">
-        </dx-button>
-      </dxi-item>
     </dxi-item>
 
   </dx-form>

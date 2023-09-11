@@ -5,24 +5,6 @@
     [formData]="cliente"
     [colCount]="1">
 
-    <dxi-item
-      itemType="group"
-      caption="Cadastro de Cliente">
-
-      <dxi-item dataField="nome">
-        <dx-text-box
-          [inputAttr]="{ 'aria-label': 'Name' }"
-          (value)="cliente.nome">
-        </dx-text-box>
-
-        <dxi-validation-rule
-          type="required"
-          message="Nome Obrigatório">
-        </dxi-validation-rule>
-
-      </dxi-item>
-    </dxi-item>
-
     <dxi-item class="buttons">
       <dx-button
         icon="undo"
@@ -48,6 +30,23 @@
       </dx-button>
     </dxi-item>
 
+    <dxi-item
+      itemType="group"
+      caption="Cadastro de Cliente">
+
+      <dxi-item dataField="nome">
+        <dx-text-box
+          [inputAttr]="{ 'aria-label': 'Name' }"
+          (value)="cliente.nome">
+        </dx-text-box>
+
+        <dxi-validation-rule
+          type="required"
+          message="Nome Obrigatório">
+        </dxi-validation-rule>
+
+      </dxi-item>
+    </dxi-item>
   </dx-form>
 
 </div>

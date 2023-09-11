@@ -22,4 +22,13 @@ export class NotaService {
   getById(id: number): Observable<Nota> {
     return this.http.get<Nota>(`${this.API}/${id}`);
   }
+
+
+  salvarNota(nota: Nota): Observable<Nota> {
+    if (nota.id) {
+      return this.http.put<Nota>(`${this.API}/${nota.id}`, nota);
+    } else {
+      return this.http.post<Nota>(this.API, nota);
+    }
+  }
 }

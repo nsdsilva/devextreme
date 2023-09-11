@@ -26,10 +26,25 @@ export class FormNotaComponent implements OnInit {
 
   notas!: Nota;
   listaClientes: Cliente[] = [];
-  clienteSalvo?: string;
+  clienteSalvo: any;
   dataSource: Itens[] = [];
   dataSourceProdutos: any[] = [];
+  items: Itens[] = [];
   nome = '';
+  isPredefined = true;
+  predefinedPosition = 'bottom center';
+  direction = 'up-push';
+  sucesso: string[] = ['success'];
+  erro: string[] = ['danger'];
+  produtoSelecionado: any;
+
+  coordinatePosition: object = {
+    top: undefined,
+    bottom: undefined,
+    left: undefined,
+    right: undefined,
+  };
+
 
 
   constructor(private clienteService: ClienteService,
@@ -38,6 +53,7 @@ export class FormNotaComponent implements OnInit {
               private location: Location,
               private router: Router,
               private activatedRoute: ActivatedRoute) {}
+
 
 
   ngOnInit(): void {
@@ -51,15 +67,14 @@ export class FormNotaComponent implements OnInit {
         for (const i of notas.itens) {
           const produto = i.produto?.descricao;
           this.dataSourceProdutos.push(produto);
-          console.log(this.dataSourceProdutos);
         }
 
         this.clienteSalvo = this.notas.cliente.nome;
-        console.log(this.clienteSalvo);
       });
 
       this.updateProdutoInfo();
   }
+
 
 
   updateClientesInfo(e: any) {
@@ -71,6 +86,7 @@ export class FormNotaComponent implements OnInit {
   }
 
 
+
   updateProdutoInfo() {
     this.produtoService.listarProdutos().subscribe(produtos => {
       this.dataSourceProdutos = produtos;
@@ -78,14 +94,65 @@ export class FormNotaComponent implements OnInit {
   }
 
 
+
+  calcularValorUnitario(row: any) {
+    if (row.produto) {
+      return row.produto.valor_unitario;
+    } else {
+      return 0;
+    }
+  }
+
+
+
   novoCliente() {
     this.router.navigate(['/novo-cliente']);
   }
 
 
-  salvar() {
+  onRowInserted(event: any) {
+    const newItem: Itens = {
 
+      produto: event.data.produto,
+      nota: event.data.nota,
+      ordenacao: event.data.ordenacao,
+      quantidade: event.data.quantidade,
+      valor_total: event.data.valor_total
+    };
+
+    this.items.push(newItem);
   }
+
+
+
+  salvar() {
+    if (this.clienteSalvo) {
+      const clienteSelecionado = this.listaClientes.find(cliente => cliente.nome === this.clienteSalvo);
+
+      if (clienteSelecionado) {
+        this.notas.cliente = clienteSelecionado;
+        this.notas.itens = this.items;
+
+        console.log('Cliente ', this.notas.cliente);
+        console.log('Itens ', this.items);
+        console.log('Produto ', );
+
+        this.service.salvarNota(this.notas).subscribe((resposta) => {
+          if (resposta) {
+            this.showSucesso();
+            this.voltar();
+          } else {
+            this.showError();
+          }
+        });
+      } else {
+        console.error('Cliente não encontrado com o nome informado.');
+      }
+    } else {
+      console.error('Nenhum cliente foi selecionado antes de salvar a nota.');
+    }
+  }
+
 
 
   cancelar() {
@@ -93,8 +160,65 @@ export class FormNotaComponent implements OnInit {
   }
 
 
+
   voltar() {
     this.location.back();
+  }
+
+
+
+  showSucesso() {
+    const position: any = this.isPredefined ? this.predefinedPosition : this.coordinatePosition;
+    const direction: any = this.direction;
+
+    if (this.sucesso && this.sucesso.length > 0) {
+        const randomIndex = Math.floor(Math.random() * this.sucesso.length);
+        const type = this.sucesso[randomIndex];
+
+        notify({
+            message: 'A Nota Fiscal foi salva com sucesso!',
+            height: 45,
+            width: 500,
+            minWidth: 150,
+            type: type.toLowerCase(),
+            displayTime: 3500,
+            animation: {
+                show: { type: 'fade', duration: 400, from: 0, to: 1 },
+                hide: { type: 'fade', duration: 40, to: 0 },
+            },
+        },
+        { position, direction });
+    } else {
+        console.error("Array 'sucesso' não definido ou vazio.");
+    }
+  }
+
+
+
+  showError() {
+    const position: any = this.isPredefined ? this.predefinedPosition : this.coordinatePosition;
+    const direction: any = this.direction;
+
+    if (this.sucesso && this.erro.length > 0) {
+        const randomIndex = Math.floor(Math.random() * this.sucesso.length);
+        const type = this.sucesso[randomIndex];
+
+        notify({
+            message: 'Ocorreu um erro ao salvar a nota Fiscal',
+            height: 45,
+            width: 500,
+            minWidth: 150,
+            type: type.toLowerCase(),
+            displayTime: 3500,
+            animation: {
+                show: { type: 'fade', duration: 400, from: 0, to: 1 },
+                hide: { type: 'fade', duration: 40, to: 0 },
+            },
+        },
+        { position, direction });
+    } else {
+        console.error("Array 'erro' não definido ou vazio.");
+    }
   }
 }
 

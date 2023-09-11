@@ -5,6 +5,31 @@
     [formData]="produto"
     [colCount]="1">
 
+    <dxi-item class="buttons">
+      <dx-button
+        icon="undo"
+        text="Voltar"
+        [width]="136"
+        (onClick)="voltar()">
+      </dx-button>
+
+      <dx-button
+        icon="close"
+        type="danger"
+        text="Cancelar"
+        [width]="136"
+        (onClick)="cancelar()">
+      </dx-button>
+
+      <dx-button
+        icon="check"
+        type="success"
+        text="Salvar"
+        [width]="136"
+        (onClick)="salvar()">
+      </dx-button>
+    </dxi-item>
+
     <dxi-item
       itemType="group"
       caption="Cadastro de Produto">
@@ -36,30 +61,7 @@
       </dxi-validation-rule>
     </dxi-item>
 
-    <dxi-item class="buttons">
-      <dx-button
-        icon="undo"
-        text="Voltar"
-        [width]="136"
-        (onClick)="voltar()">
-      </dx-button>
 
-      <dx-button
-        icon="close"
-        type="danger"
-        text="Cancelar"
-        [width]="136"
-        (onClick)="cancelar()">
-      </dx-button>
-
-      <dx-button
-        icon="check"
-        type="success"
-        text="Salvar"
-        [width]="136"
-        (onClick)="salvar()">
-      </dx-button>
-    </dxi-item>
 
   </dx-form>
 
